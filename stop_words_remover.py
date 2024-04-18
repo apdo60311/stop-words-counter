@@ -9,6 +9,10 @@ def read_file() -> list:
     return paragraphs
 
 
+"""
+Returns a dictionary of English stop words,
+where the keys are the stop words and the values are all zero.
+"""
 def get_stop_words() -> dict:
     stop_words = set(stopwords.words('english'))
     stop_words_dict = {word: 0 for word in stop_words}
@@ -16,6 +20,16 @@ def get_stop_words() -> dict:
     return stop_words_dict
 
 
+"""
+Removes stop words from a list of paragraphs 
+
+Arguments:
+    pragraphs (list): A list of paragraphs as strings.
+
+Returns:
+    tuple(list, dict): A tuple containing the updated paragraphs without stop words,
+      and a dictionary with removed stop words and their count.
+"""
 def remove_stop_words(pragraphs: list) -> tuple[list ,dict]:
     updated_paragraphs = []
     remove_stop_words_count = {}
