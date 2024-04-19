@@ -4,7 +4,7 @@ import nltk
 nltk.download('stopwords')
 
 def read_file() -> list:
-    with open('paragraphs.txt') as file:
+    with open('./app/paragraphs.txt') as file:
         paragraphs = file.readlines()
     return paragraphs
 
@@ -45,7 +45,7 @@ def remove_stop_words(pragraphs: list) -> tuple[list ,dict]:
 
 
 def write_file(content):
-    with open('paragraphs_without_stop_words.txt', 'w') as file:
+    with open('./app/paragraphs_without_stop_words.txt', 'w') as file:
         file.writelines(content)
 
 
