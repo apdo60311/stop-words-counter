@@ -1,55 +1,27 @@
 from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from collections import Counter
 import nltk
 
-nltk.download('stopwords')
+nltk.download("stopwords")
+nltk.download('punkt')
 
-def read_file() -> list:
-    with open('./app/paragraphs.txt') as file:
-        paragraphs = file.readlines()
-    return paragraphs
+# Read text file
+with open('./app/paragraphs.txt', 'r') as text_file:
+  text = text_file.read()
 
+# Split the text into words
+word_tokens = word_tokenize(text)
 
-"""
-Returns a dictionary of English stop words,
-where the keys are the stop words and the values are all zero.
-"""
-def get_stop_words() -> dict:
-    stop_words = set(stopwords.words('english'))
-    stop_words_dict = {word: 0 for word in stop_words}
+# Lowering each word
+lowered_words = [word.lower() for word in word_tokens]
 
-    return stop_words_dict
+# Setting it to English stopwords
+stop_words = set(stopwords.words("english"))
 
+# Filter out stopwords to get a count
+stopword_counts = Counter(word for word in lowered_words if word in stop_words)
 
-"""
-Removes stop words from a list of paragraphs 
-
-Arguments:
-    pragraphs (list): A list of paragraphs as strings.
-
-Returns:
-    tuple(list, dict): A tuple containing the updated paragraphs without stop words,
-      and a dictionary with removed stop words and their count.
-"""
-def remove_stop_words(pragraphs: list) -> tuple[list ,dict]:
-    updated_paragraphs = []
-    remove_stop_words_count = {}
-    for paragraph in pragraphs:
-        words:list = paragraph.split()
-        for i in range(0,len(words)):
-            if get_stop_words().get(words[i].lower()) != None:
-                remove_stop_words_count[words[i]] = remove_stop_words_count.get(words[i],0) + 1
-                words[i] = ''
-        sentence = ' '.join(words)
-        updated_paragraphs.append(sentence + '\n')
-    return (updated_paragraphs, remove_stop_words_count)
-
-
-def write_file(content):
-    with open('./app/paragraphs_without_stop_words.txt', 'w') as file:
-        file.writelines(content)
-
-
-write_file(remove_stop_words(read_file())[0])
-print(remove_stop_words(read_file())[1])
-
-# print(get_stop_words())
+# Print the frequency of each stop word
+for stopword, count in stopword_counts.items():
+  print(f"'{stopword}' appears {count} times as a stop word.")
